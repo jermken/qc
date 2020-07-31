@@ -1,0 +1,4 @@
+node_modules
+packages/qc-cli/node_modules
+packages/qc-webpack-seed/node_modules
+packages/qc-parcel-seed/node_modules

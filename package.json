@@ -1,0 +1,24 @@
+{
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "cd ./packages/qc-cli && npm link",
+        "update": "node ./scripts/update_version.js",
+        "release-l:qc-cli": "npm run update && cd ./packages/qc-cli && npm version major && npm publish",
+        "release-m:qc-cli": "cd ./packages/qc-cli && npm version minor && npm publish",
+        "release-s:qc-cli": "cd ./packages/qc-cli && npm version patch && npm publish",
+        "release-l:qc-parcel-seed": "cd ./packages/qc-parcel-seed && npm version major && npm publish",
+        "release-m:qc-parcel-seed": "cd ./packages/qc-parcel-seed && npm version minor && npm publish",
+        "release-s:qc-parcel-seed": "cd ./packages/qc-parcel-seed && npm version patch && npm publish",
+        "release-l:qc-webpack-seed": "cd ./packages/qc-webpack-seed && npm version major && npm publish",
+        "release-m:qc-webpack-seed": "cd ./packages/qc-webpack-seed && npm version minor && npm publish",
+        "release-s:qc-webpack-seed": "cd ./packages/qc-webpack-seed && npm version patch && npm publish"
+    },
+    "devDependencies": {
+        "chalk": "^2.4.2",
+        "commander": "^2.19.0",
+        "fs-extra": "^7.0.1"
+    }
+}
