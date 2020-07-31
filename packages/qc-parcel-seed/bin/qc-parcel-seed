@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+const program = require('commander')
+const logger = require('../lib/util/logger')
+
+// 定义当前版本
+// 定义使用方法
+// 定义指令
+program
+  .version(require('../package').version, '-v, --version')
+  .usage('<command> [options]')
+  .option('-m, --mode', 'set the build environment')
+  .action((dir, cmd) => {
+    if(dir === 'prod') {
+      process.env.NODE_ENV = 'production'
+      require('../index').prodRun()
+    } else {
+      process.env.NODE_ENV = 'development'
+      require('../index').devRun()
+    }
+  })
+
+// 解析命令行参数
+program.parse(process.argv)

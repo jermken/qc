@@ -1,0 +1,121 @@
+#!/usr/bin/env node
+const program = require('commander')
+const fs = require('fs')
+const path = require('path')
+const logger = require('../lib/util/logger')
+const { rmdirSync } = require('../lib/util/index')
+const inquirer = require('inquirer')
+const { LIBLIST, PACKERLIST} = require('../config/globalConst')
+
+const getCommandOptions = (argv = []) => {
+  let option = {}
+  argv.filter((i) => i.indexOf('=')>-1 && /^--/.test(i)).forEach((i) => {
+    let opt = i.replace(/--/g, '').split('=')
+    if(opt[1] === 'false') {
+      option[opt[0]] = false
+    } else if(opt[1] === 'true') {
+      option[opt[0]] = true
+    } else {
+      option[opt[0]] = opt[1]
+    }
+  })
+  return option
+}
+// 定义当前版本
+// 定义使用方法
+// 定义指令
+program
+  .version(require('../package').version, '-v, --version')
+  .usage('<command> [options]')
+
+program
+  .command('create')
+  .description('generate a new project from a template')
+  .action(async (dir, cmd) => {
+  
+    const questions = [{
+      type: 'list',
+      name: 'lib',
+      message: 'select a library for your project',
+      choices: LIBLIST
+    }, {
+      type: 'list',
+      name: 'packer',
+      message: 'select a packer tool for your project',
+      choices: PACKERLIST
+    }, {
+      type: 'list',
+      name: 'typescript',
+      message: 'is a typescript project?',
+      choices: ['false', 'true']
+    }]
+    const { name } = await inquirer.prompt([{
+      type: 'input',
+      name: 'name',
+      message: 'please input your project name',
+      validate:(val) => {
+        if(val === '') {
+          return 'project name is required'
+        } else {
+          return true
+        }
+      }
+    }])
+
+    if (fs.existsSync(path.join(process.cwd(), `/${name}`))) {
+      const { rm } = await inquirer.prompt([{
+        type: 'confirm',
+        name: 'rm',
+        message: `${name} folder has exited,do you want to delete it and create a new one?`,
+        default: false
+      }])
+      if (!rm) return
+      await rmdirSync(path.join(process.cwd(), `/${name}`))
+    }
+
+    let data = await inquirer.prompt(questions)
+    data.name = name
+    require('../commands/create.js')(data)
+  })
+
+program
+  .command('dev')
+  .description('run a project in development')
+  .option('-w, --watch', 'watch for file changes')
+  .option('-s, --silent', 'whether to print the build log')
+  .action((dir, cmd) => {
+    let _options = getCommandOptions(process.argv)
+    let _default = {
+      watch: true,
+      silent: false
+    }
+    let options = { ..._default, ..._options }
+    require('../commands/dev.js')(dir, options)
+  })
+
+program
+  .command('build')
+  .description('run a project in production')
+  .option('-u, --uglify', 'uglify the css and js')
+  .action((dir, cmd) => {
+    let _options = getCommandOptions(process.argv)
+    let _default = {
+      uglify: true
+    }
+    let options = { ..._default, ..._options }
+    require('../commands/build.js')(dir, options)
+  })
+
+program
+  .arguments('<command>')
+  .action(cmd => {
+    program.outputHelp()
+    logger.error(` Unknown command ${cmd}.`)
+  })
+
+// 解析命令行参数
+program.parse(process.argv)
+
+if(!process.argv.slice(2).length) {
+  program.outputHelp()
+}

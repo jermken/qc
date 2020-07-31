@@ -1,0 +1,9 @@
+{
+  "name": "qc-test",
+  "version": "1.0.0",
+  "dependencies": {
+    "vue-router": "^3.0.6",
+    "sass": "^1.21.0",
+    "typescript": "^3.5.1"
+  }
+}

@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "module": "esNext",
+        "target": "es5",
+        "strict": true,
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "allowJs": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "lib": ["dom",
+            "es5",
+            "es6",
+            "es7",
+            "es2015.promise"],
+        "baseUrl": ".",
+        "paths": {
+
+        }
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "./tsconfig.json"
+    ]
+}

@@ -1,0 +1,35 @@
+.home {
+    font-size: 24px;
+    &-logo {
+        width: 160px;
+        height: 160px;
+        display: block;
+        margin: 40px auto;
+    }
+    &-title {
+        text-align: center;
+        margin: 40px 0;
+        a {
+            color: yellowgreen;
+            font-size: 22px;
+        }
+    }
+    &-main {
+        text-align: center;
+    }
+    .home-desc {
+        margin-left: 40px;
+        vertical-align: top;
+        display: inline-block;
+        width: 220px;
+        &__title {
+            color: yellowgreen;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        &__info {
+            text-align: left;
+            font-size: 16px;
+        }
+    }
+}

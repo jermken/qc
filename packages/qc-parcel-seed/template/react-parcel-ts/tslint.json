@@ -1,0 +1,11 @@
+{
+    "globals": {
+        "require": true
+    },
+    "rules": {
+        "no-implicit-dependencies": ["optional", ["src"]]
+    },
+    "extends": [
+        "tslint:recommended"
+    ]
+}
