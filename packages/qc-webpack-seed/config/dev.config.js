@@ -8,14 +8,14 @@ let plugins = [new webpack.HotModuleReplacementPlugin()]
 module.exports = (options) => merge(baseConf, {
     mode: process.env.NODE_ENV || 'development',
     output: {
-        path: path.join(process.cwd(), './dist'),
+        path: path.join(process.env.CWD, './dist'),
         filename: '[name].js'
     },
     module: {
 
     },
     devServer: {
-        contentBase: path.join(process.cwd(), './dist'),
+        contentBase: path.join(process.env.CWD, './dist'),
         historyApiFallback: true,
         hot: true,
         port: 8080,

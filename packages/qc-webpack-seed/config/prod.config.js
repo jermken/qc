@@ -16,7 +16,7 @@ module.exports = (option) => merge(baseConf, {
 
     },
     plugins: [
-        new cleanWebpackPlugin(['dist'], {root: process.cwd()}), // root 必配
+        new cleanWebpackPlugin(['dist'], {root: process.env.CWD}), // root 必配
         new MiniCssExtractPlugin({
             filename: 'css/main.[hash:8].css',
             chunkFilename: 'css/[name].[hash:8].css'

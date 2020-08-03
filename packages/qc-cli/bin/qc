@@ -3,7 +3,7 @@ const program = require('commander')
 const fs = require('fs')
 const path = require('path')
 const logger = require('../lib/util/logger')
-const { rmdirSync } = require('../lib/util/index')
+const { rmdirAsync } = require('../lib/util/index')
 const inquirer = require('inquirer')
 const { LIBLIST, PACKERLIST} = require('../config/globalConst')
 
@@ -70,7 +70,7 @@ program
         default: false
       }])
       if (!rm) return
-      await rmdirSync(path.join(process.cwd(), `/${name}`))
+      await rmdirAsync(path.join(process.cwd(), `/${name}`))
     }
 
     let data = await inquirer.prompt(questions)

@@ -5,9 +5,9 @@ const htmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CreatePlugin } = require('../lib/util/index.js')
 const babelOptions = require('./babel.config')()
-const qcConfig = require(path.resolve(process.cwd(), './config.js'))
+const qcConfig = require(path.resolve(process.env.CWD, './config.js'))
 
-let pageList = fs.readdirSync(path.join(process.cwd(), './src/entry')) || []
+let pageList = fs.readdirSync(path.join(process.env.CWD, './src/entry')) || []
 let entryConfig = {}
 let htmlList = []
 let ruleList = [
@@ -18,7 +18,7 @@ let ruleList = [
     {
         test: /\.j(s|sx)$/,
         exclude: /node_modules/,
-        include: [path.join(process.cwd(), './src')],
+        include: [path.join(process.env.CWD, './src')],
         use: {
             loader: require.resolve('babel-loader'),
             options: babelOptions
@@ -30,7 +30,7 @@ let ruleList = [
             process.env.NODE_ENV !== 'production' ? (qcConfig.lib === 'vue' ? require.resolve('vue-style-loader') : require.resolve('style-loader')) : {
                 loader: MiniCssExtractPlugin.loader,
                 options: {
-                    publicPath: path.join(process.cwd(), '../')
+                    publicPath: path.join(process.env.CWD, '../')
                 }
             }, require.resolve('css-loader'), require.resolve('sass-loader')
         ]
@@ -64,26 +64,26 @@ let optTsxRule = {
 }
 
 pageList = pageList.filter((item) => {
-    return fs.statSync(path.join(process.cwd(), './src/entry', `./${item}`)).isDirectory()
+    return fs.statSync(path.join(process.env.CWD, './src/entry', `./${item}`)).isDirectory()
 })
 pageList.forEach((item) => {
-    if(fs.existsSync(path.join(process.cwd(), `./src/entry/${item}/${item}.js`))) {
-        entryConfig[item] = path.join(process.cwd(), `./src/entry/${item}/${item}.js`)
-    } else if(fs.existsSync(path.join(process.cwd(), `./src/entry/${item}/${item}.ts`))) {
-        entryConfig[item] = path.join(process.cwd(), `./src/entry/${item}/${item}.ts`)
-    } else if(fs.existsSync(path.join(process.cwd(), `./src/entry/${item}/${item}.tsx`))) {
-        entryConfig[item] = path.join(process.cwd(), `./src/entry/${item}/${item}.tsx`)
-    } else if(fs.existsSync(path.join(process.cwd(), `./src/entry/${item}/${item}.jsx`))) {
-        entryConfig[item] = path.join(process.cwd(), `./src/entry/${item}/${item}.jsx`)
+    if(fs.existsSync(path.join(process.env.CWD, `./src/entry/${item}/${item}.js`))) {
+        entryConfig[item] = path.join(process.env.CWD, `./src/entry/${item}/${item}.js`)
+    } else if(fs.existsSync(path.join(process.env.CWD, `./src/entry/${item}/${item}.ts`))) {
+        entryConfig[item] = path.join(process.env.CWD, `./src/entry/${item}/${item}.ts`)
+    } else if(fs.existsSync(path.join(process.env.CWD, `./src/entry/${item}/${item}.tsx`))) {
+        entryConfig[item] = path.join(process.env.CWD, `./src/entry/${item}/${item}.tsx`)
+    } else if(fs.existsSync(path.join(process.env.CWD, `./src/entry/${item}/${item}.jsx`))) {
+        entryConfig[item] = path.join(process.env.CWD, `./src/entry/${item}/${item}.jsx`)
     }
     htmlList.push(
         new htmlWebpackPlugin({
             filename: `./${item}.html`,
-            template: path.resolve(process.cwd(), `./src/entry/${item}/${item}.html`),
+            template: path.resolve(process.env.CWD, `./src/entry/${item}/${item}.html`),
             chunks: [item],
             env: process.env.NODE_ENV,
             inject: process.env.NODE_ENV === 'development'? false : true,
-            favicon: path.resolve(process.cwd(), `./src/entry/favicon.ico`),
+            favicon: path.resolve(process.env.CWD, `./src/entry/favicon.ico`),
             minify: {
                 collapseWhitespace:true,
                 removeComments: true
@@ -112,9 +112,9 @@ let webpackConfig = {
     resolve: {
         extensions: ['.js', '.ts', '.vue', '.tsx', 'jsx', '.json'],
         alias: {
-            '@': path.join(process.cwd(), './src')
+            '@': path.join(process.env.CWD, './src')
         },
-        modules: [path.resolve(process.cwd(), './node_modules'), path.resolve(__dirname, '../node_modules'), path.resolve(__dirname, '../../../../node_modules')]
+        modules: [path.resolve(process.env.CWD, './node_modules'), path.resolve(__dirname, '../node_modules'), path.resolve(__dirname, '../../../node_modules')]
     }
 }
 

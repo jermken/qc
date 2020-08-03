@@ -6,7 +6,8 @@ const url = require('url')
 const path = require('path')
 
 module.exports = function(options) {
-    const webpackOptions = merge(require('../config/dev.config')(options), require(path.resolve(process.cwd(), './config.js')).dev || {})
+    const qcConfig = require(path.resolve(process.env.CWD, './config.js'))
+    const webpackOptions = merge(require('../config/dev.config')(options), qcConfig.dev || {})
     const compiler = webpack(webpackOptions)
     const server = new WebpackServer(compiler, {...webpackOptions.devServer, quiet: options.silent})
 

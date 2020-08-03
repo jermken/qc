@@ -6,7 +6,7 @@ const merge = require('webpack-merge')
 const path = require('path')
 
 module.exports = function(option) {
-    const webpackOptions = merge(require('../config/prod.config')(option), require(path.resolve(process.cwd(), './config.js')).prod || {})
+    const webpackOptions = merge(require('../config/prod.config')(option), require(path.resolve(process.env.CWD, './config.js')).prod || {})
     const compiler = webpack(webpackOptions)
     let spinner = ora('')
 
